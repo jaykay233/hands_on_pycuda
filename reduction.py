@@ -26,3 +26,13 @@ for i in range(10):
     red(a[i], out=a_sum[i])
 
 assert(np.allclose(a_sum.get(), a.get().sum(axis=1)))
+
+log_example(3)
+from pycuda.compiler import SourceModule
+ker = SourceModule("""
+__global__ void scalar_multiply_kernel(float *outvec, float scalar, float *vec)
+{
+    int i = threadIdx.x;
+    outvec[i] = scalar * vec[i]
+}
+""")
